@@ -1,6 +1,7 @@
 import browser from '../browser';
 
 import { ExternallyManagedKeyHandler } from './ExternallyManagedKeyHandler';
+import { MLSKeyHandler } from './MLSKeyHandler';
 import { ManagedKeyHandler } from './ManagedKeyHandler';
 import { OlmAdapter } from './OlmAdapter';
 
@@ -18,7 +19,11 @@ export class E2EEncryption {
         this._externallyManaged = e2ee.externallyManagedKey;
 
         if (this._externallyManaged) {
-            this._keyHandler = new ExternallyManagedKeyHandler(conference);
+            if (e2ee.mls) {
+                this._keyHandler = new MLSKeyHandler(conference);
+            } else {
+                this._keyHandler = new ExternallyManagedKeyHandler(conference);
+            }
         } else {
             this._keyHandler = new ManagedKeyHandler(conference);
         }

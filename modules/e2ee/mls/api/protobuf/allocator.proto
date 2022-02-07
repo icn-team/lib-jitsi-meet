@@ -1,0 +1,13 @@
+syntax = "proto3";
+package allocator;
+
+import "google/protobuf/empty.proto";
+
+message Proxy {
+  string address = 1;
+}
+
+service Allocator {
+  rpc RequestProxy(google.protobuf.Empty) returns (Proxy) {}
+  rpc AddProxy(Proxy) returns (google.protobuf.Empty) {}
+}

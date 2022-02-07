@@ -1,0 +1,77 @@
+syntax = "proto3";
+package proxy;
+
+import "google/protobuf/empty.proto";
+
+message KeyPackageRef {
+  bytes value = 1;
+}
+
+message LeafNodeRef {
+  bytes value = 1;
+}
+
+message LeafIndex {
+  uint32 value = 1;
+}
+
+message GroupID {
+  bytes value = 1;
+}
+
+message Epoch {
+  uint64 value = 1;
+}
+
+message CipherSuite {
+  enum ID {
+    UNKNOWN = 0;
+    X25519_AES128GCM_SHA256_Ed25519 = 1;
+    P256_AES128GCM_SHA256_P256 = 2;
+    X25519_CHACHA20POLY1305_SHA256_Ed25519 = 3;
+    X448_AES256GCM_SHA512_Ed448 = 4;
+    P521_AES256GCM_SHA512_P521 = 5;
+    X448_CHACHA20POLY1305_SHA512_Ed448 = 6;
+    P384_AES256GCM_SHA384_P384 = 7;
+  }
+  ID value = 1;
+}
+
+message Roster {
+  repeated LeafNodeRef values = 1;
+}
+
+message AuthenticationSecret {
+  bytes value = 1;
+}
+
+message ExporterSecret {
+  bytes value = 1;
+}
+
+message ExporterSecretRequest {
+  string label = 1;
+  bytes context = 2;
+  uint64 size = 3;
+}
+
+message Message {
+  bytes value = 1;
+}
+
+service Proxy {
+  rpc Add(KeyPackageRef) returns (google.protobuf.Empty) {}
+  rpc Update(google.protobuf.Empty) returns (google.protobuf.Empty) {}
+  rpc Remove(LeafNodeRef) returns (google.protobuf.Empty) {}
+  rpc GetLeafNodeRef(google.protobuf.Empty) returns (LeafNodeRef) {}
+  rpc GetLeafIndex(google.protobuf.Empty) returns (LeafIndex) {}
+  rpc GetGroupID(google.protobuf.Empty) returns (GroupID) {}
+  rpc GetEpoch(google.protobuf.Empty) returns (Epoch) {}
+  rpc GetCipherSuite(google.protobuf.Empty) returns (CipherSuite) {}
+  rpc GetRoster(google.protobuf.Empty) returns (Roster) {}
+  rpc GetAuthenticationSecret(google.protobuf.Empty) returns (AuthenticationSecret) {}
+  rpc GetExporterSecret(ExporterSecretRequest) returns (ExporterSecret) {}
+  rpc Protect(Message) returns (Message) {}
+  rpc Unprotect(Message) returns (Message) {}
+  rpc Hash(Message) returns (Message) {}
+}
