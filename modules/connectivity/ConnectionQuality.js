@@ -477,6 +477,35 @@ export default class ConnectionQuality {
             }
         }
 
+        var qoe_message = "QoE stats: ";
+        qoe_message += new Date().getTime();
+
+        var res_height, res_width, fps;
+        var my_keys = Object.keys(this._localStats.resolution);
+        for( var i = 0; i < my_keys.length; ++i) {
+            qoe_message += " client_" + i + " " + my_keys[i] + " ";
+            res_height = Object.values(this._localStats.resolution[my_keys[i]])[0].height;
+            res_width = Object.values(this._localStats.resolution[my_keys[i]])[0].width;
+            fps = Object.values(this._localStats.framerate[my_keys[i]]);
+            qoe_message += res_width + "x" + res_height + " " + fps;
+        }
+        qoe_message += " bitrate_dn=" + this._localStats.bitrate.download;
+        qoe_message += " bitrate_up=" + this._localStats.bitrate.upload;
+        qoe_message += " pkt_loss_dn=" + this._localStats.packetLoss.download;
+        qoe_message += " pkt_loss_up=" + this._localStats.packetLoss.upload;
+        qoe_message += " pkt_loss_total=" + this._localStats.packetLoss.total;
+
+        if (this._localStats.transport.length > 0) {
+            var transport = this._localStats.transport[0]
+            qoe_message += " transport_type=" + transport.type;
+            qoe_message += " remote_ip=" + transport.ip;
+            qoe_message += " local_ip=" + transport.localip;
+            qoe_message += " network_type=" + transport.networkType;
+            qoe_message += " isP2P=" + transport.p2p;
+            qoe_message += " rtt=" + transport.rtt;
+        }
+        console.log("QoE Stats: ", qoe_message);
+
         // And re-calculate the connectionQuality field.
         if (updateLocalConnectionQuality) {
             this._updateLocalConnectionQuality(
