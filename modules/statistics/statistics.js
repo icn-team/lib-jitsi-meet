@@ -195,7 +195,7 @@ export default function Statistics(xmpp, options) {
 }
 Statistics.audioLevelsEnabled = false;
 Statistics.audioLevelsInterval = 200;
-Statistics.pcStatsInterval = 10000;
+Statistics.pcStatsInterval = 1000;
 Statistics.disableThirdPartyRequests = false;
 Statistics.analytics = analytics;
 

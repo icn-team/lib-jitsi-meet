@@ -369,7 +369,7 @@ export default class ConnectionQuality {
                 // Time since sending of video was enabled.
                 const millisSinceStart = window.performance.now()
                     - Math.max(this._timeVideoUnmuted, this._timeIceConnected);
-                const statsInterval = this._options.config?.pcStatsInterval ?? 10000;
+                const statsInterval = this._options.config?.pcStatsInterval ?? 1000;
 
                 // Expected sending bitrate in perfect conditions.
                 let target = getTarget(isSimulcastOn, resolution, millisSinceStart, videoQualitySettings);
